@@ -15,8 +15,10 @@ To sync perform the following steps:
 It can be included in any Gradle projects which use [JitPack.io](https://jitpack.io) like so:
 
 ```groovy
+def version = 'x.y.z'
+
 dependencies {
     // ...
-    implementation group: 'com.github.cbartram', name:'packet-utils', version: shortestPathPluginVersion
+    implementation group: 'com.github.cbartram', name:'packet-utils', version: version
 }
 ```
