@@ -13,6 +13,7 @@ repositories {
 }
 
 def runeLiteVersion = '1.11.13'
+def projectVersion = System.getenv("VERSION") ?: '1.0.0'
 
 dependencies {
     compileOnly group: 'net.runelite', name: 'client', version: runeLiteVersion
@@ -35,8 +36,10 @@ sourceSets {
     }
 }
 
-group = 'com.example'
-version = '5.4'
+group = 'com.github.cbartram'
+version = projectVersion
+project.version = projectVersion
+
 sourceCompatibility = "11"
 targetCompatibility = "11"
 
@@ -44,7 +47,8 @@ task FatJar(type: Jar) {
     manifest {
         attributes 'Main-Class': 'com.example.Main'
     }
-    baseName = 'EthanVannPlugins'
+    archiveBaseName = 'packet-utils'
+    archiveVersion = projectVersion
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     exclude("com/example/hidden")
@@ -56,7 +60,8 @@ task FatJarWithHidden(type: Jar) {
     manifest {
         attributes 'Main-Class': 'com.example.Main'
     }
-    baseName = 'EthanVannPlugins'
+
+    archiveBaseName = 'packet-utils'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
@@ -66,15 +71,10 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-        }
-    }
-    repositories {
-        maven {
-            credentials {
-                username 'admin'
-                password 'password'
-            }
-            url "http://baseUrl/artifactory/libs-release-local"
+
+            groupId = group
+            artifactId = 'packet-utils'
+            version = version
         }
     }
 }
